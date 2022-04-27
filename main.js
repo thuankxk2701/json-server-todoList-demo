@@ -1,36 +1,15 @@
-const jsonServer = require('json-server');
-const server = jsonServer.create();
-const router = jsonServer.router('db.json');
-const middlewares = jsonServer.defaults();
-const queryString = require('query-string');
+
+const express= require('express')
+
 const path =require('path')
 
 // Set default middlewares (logger, static, cors and no-cache)
-server.use(middlewares);
+const app=express()
 
-// Add custom routes before JSON Server router
-server.get('/echo', (req, res) => {
-  res.jsonp(req.query);
-});
 
-// To handle POST, PUT and PATCH you need to use a body-parser
-// You can use the one used by JSON Server
-server.use(jsonServer.bodyParser);
-server.use((req, res, next) => {
-  if (req.method === 'POST') {
-    req.body.createdAt = Date.now();
-    req.body.upcreatedAt = Date.now();
-  } else if (req.method === 'PATCH') {
-    req.body.upcreatedAt = Date.now();
-  }
-  // Continue to JSON Server router
-  next();
-});
 
-// Use default router
-server.use('/api', router);
-server.use("/uploads", express.static(path.join(__dirname, "./uploads")));
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
+const PORT = 8080;
+app.listen(PORT, () => {
   console.log('JSON Server is running');
 });
