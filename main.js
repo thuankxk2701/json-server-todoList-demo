@@ -3,6 +3,7 @@ const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const queryString = require('query-string');
+const path =require('path')
 
 // Set default middlewares (logger, static, cors and no-cache)
 server.use(middlewares);
@@ -28,6 +29,7 @@ server.use((req, res, next) => {
 
 // Use default router
 server.use('/api', router);
+server.use("/uploads", express.static(path.join(__dirname, "./uploads")));
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log('JSON Server is running');
